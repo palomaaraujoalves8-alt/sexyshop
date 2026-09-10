@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Controle de Estoque - Sex Shop</title>
+    <style>
+        :root {
+            --bg-dark: #0f0b12;
+            --card-bg: #1a1221;
+            --primary-gold: #d4af37;
+            --accent-wine: #5c0622;
+            --accent-wine-light: #800e34;
+            --text-light: #f5f5f7;
+            --text-muted: #a095a8;
+            --border-gold: rgba(212, 175, 55, 0.3);
+            --danger-red: #8b0000;
+            --warning-yellow: #b8860b;
+            --success-green: #1e4620;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.4;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 2px solid var(--primary-gold);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: var(--primary-gold);
+            margin: 0 0 10px 0;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-gold);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .card h3 {
+            margin: 0 0 10px 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .card .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-gold);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .search-input, .select-input {
+            background: var(--card-bg);
+            border: 1px solid var(--border-gold);
+            color: var(--text-light);
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .select-input option {
+            background: var(--card-bg);
+            color: var(--text-light);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-gold);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: var(--accent-wine);
+            color: var(--primary-gold);
+            padding: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--primary-gold);
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: middle;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        tr:hover {
+            background-color: rgba(128, 14, 52, 0.2);
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .status-ok { background-color: var(--success-green); color: #a3e2a7; }
+        .status-low { background-color: var(--warning-yellow); color: #fff3cd; }
+        .status-out { background-color: var(--danger-red); color: #f8d7da; }
+
+        .btn-qty {
+            background-color: var(--accent-wine-light);
+            border: 1px solid var(--primary-gold);
+            color: var(--text-light);
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            line-height: 1;
+            transition: all 0.2s;
+        }
+
+        .btn-qty:hover {
+            background-color: var(--primary-gold);
+            color: var(--bg-dark);
+        }
+
+        .qty-value {
+            display: inline-block;
+            width: 35px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .price-input {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--primary-gold);
+            width: 80px;
+            padding: 4px;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .price-input:hover, .price-input:focus {
+            border-color: var(--primary-gold);
+            background-color: var(--bg-dark);
+            border-radius: 4px;
+        }
+
+        .variant-tag {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--primary-gold);
+            color: var(--primary-gold);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-left: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Painel de Controle de Estoque</h1>
+        <p>Sistema Integrado de Gestão e Acompanhamento Financeiro</p>
+    </div>
+
+    <!-- Metrics Cards -->
+    <div class="metrics-grid">
+        <div class="card">
+            <h3>Valor Total em Estoque</h3>
+            <div class="value" id="metric-total-val">R$ 0,00</div>
+        </div>
+        <div class="card">
+            <h3>Total de Produtos Cadastrados</h3>
+            <div class="value" id="metric-total-items">0</div>
+        </div>
+        <div class="card">
+            <h3>Itens Disponíveis</h3>
+            <div class="value" id="metric-available-items">0</div>
+        </div>
+        <div class="card">
+            <h3>Itens Esgotados</h3>
+            <div class="value" id="metric-out-items">0</div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <input type="text" id="search-input" class="search-input" placeholder="Buscar produto..." oninput="renderTable()">
+        <select id="filter-category" class="select-input" onchange="renderTable()">
+            <option value="ALL">Todas as Categorias</option>
+            <option value="Cosméticos & Géis">Cosméticos & Géis</option>
+            <option value="Acessórios & BDSM">Acessórios & BDSM</option>
+            <option value="Vibradores & Sugadores">Vibradores & Sugadores</option>
+            <option value="Próteses & Plugs">Próteses & Plugs</option>
+            <option value="Lingeries & Vestuário">Lingeries & Vestuário</option>
+            <option value="Masculino & Masturbadores">Masculino & Masturbadores</option>
+            <option value="Jogos & Brincadeiras">Jogos & Brincadeiras</option>
+        </select>
+        <select id="filter-status" class="select-input" onchange="renderTable()">
+            <option value="ALL">Todos os Status</option>
+            <option value="OK">Em Estoque</option>
+            <option value="LOW">Estoque Baixo</option>
+            <option value="OUT">Esgotado</option>
+        </select>
+    </div>
+
+    <!-- Table -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Produto</th>
+                    <th>Variação / Detalhes</th>
+                    <th>Categoria</th>
+                    <th>Preço Un. (R$)</th>
+                    <th>Quantidade</th>
+                    <th>Valor Total (R$)</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="inventory-table-body">
+                <!-- Preenchido via JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let inventory = [
+            { id: "PROD-001", name: "Aceita que Dói Menos", category: "Cosméticos & Géis", price: 29.99, qty: 2, variant: "-" },
+            { id: "PROD-002", name: "Algemas Pelúcia", category: "Acessórios & BDSM", price: 29.99, qty: 1, variant: "-" },
+            { id: "PROD-003", name: "Algemas Metal", category: "Acessórios & BDSM", price: 24.99, qty: 1, variant: "-" },
+            { id: "PROD-004", name: "Anel Peniano", category: "Acessórios & BDSM", price: 19.99, qty: 1, variant: "Preto" },
+            { id: "PROD-005", name: "Baralho Erótico", category: "Jogos & Brincadeiras", price: 60.00, qty: 1, variant: "-" },
+            { id: "PROD-006", name: "Blow Girl", category: "Cosméticos & Géis", price: 68.00, qty: 1, variant: "-" },
+            { id: "PROD-007", name: "Blow Girl Esfoliante", category: "Cosméticos & Géis", price: 124.80, qty: 1, variant: "-" },
+            { id: "PROD-008", name: "Bolinhas Explosivas", category: "Cosméticos & Géis", price: 18.00, qty: 6, variant: "-" },
+            { id: "PROD-009", name: "Calcinha Personalizada Pink", category: "Lingeries & Vestuário", price: 45.00, qty: 3, variant: "Pink" },
+            { id: "PROD-010", name: "Calcinha Personalizada Salmão", category: "Lingeries & Vestuário", price: 45.00, qty: 3, variant: "Salmão" },
+            { id: "PROD-011", name: "Calcinha Personalizada Branca", category: "Lingeries & Vestuário", price: 45.00, qty: 3, variant: "Branca" },
+            { id: "PROD-012", name: "Calcinha Personalizada Vermelha", category: "Lingeries & Vestuário", price: 45.00, qty: 1, variant: "Vermelha" },
+            { id: "PROD-013", name: "Calcinha Personalizada Preta", category: "Lingeries & Vestuário", price: 45.00, qty: 0, variant: "Preta" },
+            { id: "PROD-014", name: "Capa Peniana", category: "Masculino & Masturbadores", price: 35.60, qty: 0, variant: "-" },
+            { id: "PROD-015", name: "Chá de PPK", category: "Cosméticos & Géis", price: 39.99, qty: 1, variant: "-" },
+            { id: "PROD-016", name: "Chá de Pika", category: "Cosméticos & Géis", price: 39.99, qty: 1, variant: "-" },
+            { id: "PROD-017", name: "Cinta Peniana", category: "Acessórios & BDSM", price: 48.50, qty: 2, variant: "-" },
+            { id: "PROD-018", name: "Cinta com Algemas", category: "Acessórios & BDSM", price: 170.00, qty: 1, variant: "-" },
+            { id: "PROD-019", name: "Clito Gel", category: "Cosméticos & Géis", price: 33.00, qty: 0, variant: "-" },
+            { id: "PROD-020", name: "D4 Gel Hot", category: "Cosméticos & Géis", price: 42.00, qty: 1, variant: "Hot" },
+            { id: "PROD-021", name: "D4 Gel Neutro", category: "Cosméticos & Géis", price: 42.00, qty: 2, variant: "Neutro" },
+            { id: "PROD-022", name: "D4 Gel Frozen", category: "Cosméticos & Géis", price: 42.00, qty: 0, variant: "Frozen" },
+            { id: "PROD-023", name: "Dados Gay", category: "Jogos & Brincadeiras", price: 18.00, qty: 1, variant: "Gay" },
+            { id: "PROD-024", name: "Dados Hetero", category: "Jogos & Brincadeiras", price: 18.00, qty: 1, variant: "Hetero" },
+            { id: "PROD-025", name: "Ducha Higiênica", category: "Acessórios & BDSM", price: 49.99, qty: 1, variant: "-" },
+            { id: "PROD-026", name: "Egg Tradicional", category: "Masculino & Masturbadores", price: 29.99, qty: 1, variant: "-" },
+            { id: "PROD-027", name: "Egg Vazado", category: "Masculino & Masturbadores", price: 34.99, qty: 1, variant: "-" },
+            { id: "PROD-028", name: "Egg Vagina", category: "Masculino & Masturbadores", price: 49.99, qty: 2, variant: "Vagina" },
+            { id: "PROD-029", name: "Egg Ânus", category: "Masculino & Masturbadores", price: 49.99, qty: 1, variant: "Ânus" },
+            { id: "PROD-030", name: "Egg Boca", category: "Masculino & Masturbadores", price: 49.99, qty: 0, variant: "Boca" },
+            { id: "PROD-031", name: "Faísca na Xavasca", category: "Cosméticos & Géis", price: 19.99, qty: 0, variant: "-" },
+            { id: "PROD-032", name: "Garganta Muito + Profunda", category: "Cosméticos & Géis", price: 38.50, qty: 1, variant: "Chiclete" },
+            { id: "PROD-033", name: "Garganta Profunda Sedenta", category: "Cosméticos & Géis", price: 23.50, qty: 1, variant: "Kiwi" },
+            { id: "PROD-034", name: "Garganta Profunda Intt", category: "Cosméticos & Géis", price: 60.00, qty: 0, variant: "-" },
+            { id: "PROD-035", name: "Gel Sugador Unissex Pico Pulse", category: "Cosméticos & Géis", price: 175.00, qty: 0, variant: "-" },
+            { id: "PROD-036", name: "Gel Sugador Sugalik", category: "Cosméticos & Géis", price: 130.00, qty: 0, variant: "-" },
+            { id: "PROD-037", name: "Goze +", category: "Cosméticos & Géis", price: 29.99, qty: 2, variant: "-" },
+            { id: "PROD-038", name: "Indolor Gel", category: "Cosméticos & Géis", price: 29.99, qty: 1, variant: "-" },
+            { id: "PROD-039", name: "Kuloko Gel", category: "Cosméticos & Géis", price: 28.50, qty: 2, variant: "-" },
+            { id: "PROD-040", name: "Lacradinha", category: "Cosméticos & Géis", price: 29.99, qty: 1, variant: "-" },
+            { id: "PROD-041", name: "Lanterna Erótica", category: "Acessórios & BDSM", price: 190.00, qty: 1, variant: "-" },
+            { id: "PROD-042", name: "Lâmina Paper Menta", category: "Cosméticos & Géis", price: 10.00, qty: 1, variant: "Menta" },
+            { id: "PROD-043", name: "Lâmina Paper Extra Forte", category: "Cosméticos & Géis", price: 10.00, qty: 1, variant: "Extra Forte" },
+            { id: "PROD-044", name: "Lis In", category: "Cosméticos & Géis", price: 72.00, qty: 3, variant: "-" },
+            { id: "PROD-045", name: "Liquidi Vibrador", category: "Cosméticos & Géis", price: 29.99, qty: 1, variant: "Menta" },
+            { id: "PROD-046", name: "Love Lub Neutro", category: "Cosméticos & Géis", price: 35.00, qty: 2, variant: "Neutro" },
+            { id: "PROD-047", name: "Love Lub Ice", category: "Cosméticos & Géis", price: 35.00, qty: 0, variant: "Ice" },
+            { id: "PROD-048", name: "Mama Teta", category: "Cosméticos & Géis", price: 25.00, qty: 2, variant: "-" },
+            { id: "PROD-049", name: "Melzinho do Amor", category: "Cosméticos & Géis", price: 24.50, qty: 1, variant: "-" },
+            { id: "PROD-050", name: "Pika Turbo", category: "Cosméticos & Géis", price: 35.00, qty: 2, variant: "-" },
+            { id: "PROD-051", name: "Plug Silicone P", category: "Próteses & Plugs", price: 45.00, qty: 1, variant: "Vermelho" },
+            { id: "PROD-052", name: "Plug Anal Metal P", category: "Próteses & Plugs", price: 45.00, qty: 2, variant: "Vermelho" },
+            { id: "PROD-053", name: "Plug Anal Metal M Vermelho", category: "Próteses & Plugs", price: 52.00, qty: 2, variant: "Vermelho" },
+            { id: "PROD-054", name: "Plug Anal Metal M Pink", category: "Próteses & Plugs", price: 52.00, qty: 1, variant: "Pink" },
+            { id: "PROD-055", name: "Plug Anal Metal G", category: "Próteses & Plugs", price: 60.00, qty: 1, variant: "Vermelho" },
+            { id: "PROD-056", name: "Prótese com Ventosa 18x4,5cm", category: "Próteses & Plugs", price: 140.00, qty: 1, variant: "-" },
+            { id: "PROD-057", name: "Power Shock Gel", category: "Cosméticos & Géis", price: 32.00, qty: 2, variant: "-" },
+            { id: "PROD-058", name: "Power Shock Spray", category: "Cosméticos & Géis", price: 45.00, qty: 1, variant: "Chiclete" },
+            { id: "PROD-059", name: "Sedenta por Conforto", category: "Cosméticos & Géis", price: 45.50, qty: 1, variant: "-" },
+            { id: "PROD-060", name: "Sedenta Molhada", category: "Cosméticos & Géis", price: 30.00, qty: 1, variant: "-" },
+            { id: "PROD-061", name: "Sedenta Sabores Iogurte Morango", category: "Cosméticos & Géis", price: 18.00, qty: 1, variant: "Iogurte Morango" },
+            { id: "PROD-062", name: "Sedenta Sabores Gelada", category: "Cosméticos & Géis", price: 18.00, qty: 1, variant: "Gelada" },
+            { id: "PROD-063", name: "Sete Sensação", category: "Cosméticos & Géis", price: 46.80, qty: 1, variant: "-" },
+            { id: "PROD-064", name: "Tesão de Touro", category: "Cosméticos & Géis", price: 10.00, qty: 5, variant: "-" },
+            { id: "PROD-065", name: "Tesão de Vaca", category: "Cosméticos & Géis", price: 10.00, qty: 3, variant: "-" },
+            { id: "PROD-066", name: "Tesão na Raba", category: "Cosméticos & Géis", price: 29.99, qty: 1, variant: "-" },
+            { id: "PROD-067", name: "Vibrador/Sugador Rosa", category: "Vibradores & Sugadores", price: 220.00, qty: 1, variant: "Rosa" },
+            { id: "PROD-068", name: "Vibrador de Calcinha", category: "Vibradores & Sugadores", price: 150.00, qty: 1, variant: "-" },
+            { id: "PROD-069", name: "Vibrador Golfinho Rosa", category: "Vibradores & Sugadores", price: 40.00, qty: 1, variant: "Rosa" },
+            { id: "PROD-070", name: "Vibrador Golfinho Vinho", category: "Vibradores & Sugadores", price: 40.00, qty: 1, variant: "Vinho" },
+            { id: "PROD-071", name: "Vibrador Ballet", category: "Vibradores & Sugadores", price: 30.00, qty: 1, variant: "Preto" },
+            { id: "PROD-072", name: "Volumão Gel", category: "Cosméticos & Géis", price: 40.00, qty: 1, variant: "-" },
+            { id: "PROD-073", name: "Xana Loka", category: "Cosméticos & Géis", price: 30.00, qty: 2, variant: "-" },
+            { id: "PROD-074", name: "Yummi Bebidas Vodca c/ Melancia", category: "Cosméticos & Géis", price: 20.00, qty: 1, variant: "Vodca c/ Melancia" }
+        ];
+
+        function updateMetrics() {
+            let totalVal = 0;
+            let availableCount = 0;
+            let outCount = 0;
+
+            inventory.forEach(item => {
+                totalVal += item.price * item.qty;
+                if (item.qty > 0) availableCount++;
+                else outCount++;
+            });
+
+            document.getElementById('metric-total-val').innerText = 'R$ ' + totalVal.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+            document.getElementById('metric-total-items').innerText = inventory.length;
+            document.getElementById('metric-available-items').innerText = availableCount;
+            document.getElementById('metric-out-items').innerText = outCount;
+        }
+
+        function updateQuantity(index, delta) {
+            if (inventory[index].qty + delta >= 0) {
+                inventory[index].qty += delta;
+                renderTable();
+            }
+        }
+
+        function updatePrice(index, value) {
+            let parsed = parseFloat(value);
+            if (!isNaN(parsed) && parsed >= 0) {
+                inventory[index].price = parsed;
+                updateMetrics();
+                let totalCell = document.getElementById(`total-val-${index}`);
+                if (totalCell) {
+                    totalCell.innerText = 'R$ ' + (inventory[index].price * inventory[index].qty).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+                }
+            }
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('inventory-table-body');
+            const search = document.getElementById('search-input').value.toLowerCase();
+            const catFilter = document.getElementById('filter-category').value;
+            const statusFilter = document.getElementById('filter-status').value;
+
+            tbody.innerHTML = '';
+
+            inventory.forEach((item, index) => {
+                let matchesSearch = item.name.toLowerCase().includes(search) || item.id.toLowerCase().includes(search);
+                let matchesCat = (catFilter === 'ALL' || item.category === catFilter);
+                
+                let itemStatus = item.qty === 0 ? 'OUT' : (item.qty <= 1 ? 'LOW' : 'OK');
+                let matchesStatus = (statusFilter === 'ALL' || statusFilter === itemStatus);
+
+                if (matchesSearch && matchesCat && matchesStatus) {
+                    let statusClass = item.qty === 0 ? 'status-out' : (item.qty <= 1 ? 'status-low' : 'status-ok');
+                    let statusText = item.qty === 0 ? 'Esgotado' : (item.qty <= 1 ? 'Estoque Baixo' : 'Em Estoque');
+
+                    let row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${item.id}</strong></td>
+                        <td>${item.name}</td>
+                        <td>${item.variant !== '-' ? `<span class="variant-tag">${item.variant}</span>` : '-'}</td>
+                        <td>${item.category}</td>
+                        <td>R$ <input type="number" step="0.01" class="price-input" value="${item.price.toFixed(2)}" onchange="updatePrice(${index}, this.value)"></td>
+                        <td>
+                            <button class="btn-qty" onclick="updateQuantity(${index}, -1)">-</button>
+                            <span class="qty-value">${item.qty}</span>
+                            <button class="btn-qty" onclick="updateQuantity(${index}, 1)">+</button>
+                        </td>
+                        <td id="total-val-${index}">R$ ${(item.price * item.qty).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    `;
+                    tbody.appendChild(row);
+                }
+            });
+
+            updateMetrics();
+        }
+
+        renderTable();
+    </script>
+</body>
+</html>
