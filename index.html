@@ -215,7 +215,7 @@
             border: 1px solid rgba(212, 175, 55, 0.2);
             color: var(--text-light);
             padding: 4px;
-            max-width: 200px;
+            max-width: 220px;
         }
 
         .category-select option {
@@ -275,17 +275,17 @@
         <input type="text" id="search-input" class="search-input" placeholder="Buscar produto...">
         <select id="filter-category" class="select-input">
             <option value="ALL">Todas as Categorias</option>
-            <option value="ESTIMULADORES E VIBRADORES">ESTIMULADORES E VIBRADORES</option>
-            <option value="PRÓTESES E MASTURBADORES">PRÓTESES E MASTURBADORES</option>
-            <option value="LUBRIFICANTES NEUTROS">LUBRIFICANTES NEUTROS</option>
-            <option value="EXCITANTES MASCULINOS">EXCITANTES MASCULINOS</option>
-            <option value="EXCITANTE PARA AMBOS">EXCITANTE PARA AMBOS</option>
-            <option value="LINHA ANAL / ANESTÉSICOS">LINHA ANAL / ANESTÉSICOS</option>
-            <option value="SEXO ORAL">SEXO ORAL</option>
-            <option value="FETICHE, DOMINAÇÃO E ACESSÓRIOS">FETICHE, DOMINAÇÃO E ACESSÓRIOS</option>
-            <option value="AFRODISÍACOS">AFRODISÍACOS</option>
-            <option value="MASSAGEM">MASSAGEM</option>
-            <option value="LANGERIES & VESTUÁRIO">LANGERIES & VESTUÁRIO</option>
+            <option value="Estimuladores e Vibradores">Estimuladores e Vibradores</option>
+            <option value="Próteses e Masturbadores">Próteses e Masturbadores</option>
+            <option value="Lubrificantes Neutros">Lubrificantes Neutros</option>
+            <option value="Excitantes Masculinos">Excitantes Masculinos</option>
+            <option value="Excitante para Ambos">Excitante para Ambos</option>
+            <option value="Linha Anal / Anestésicos">Linha Anal / Anestésicos</option>
+            <option value="Sexo Oral">Sexo Oral</option>
+            <option value="Fetiche, Dominação e Acessórios">Fetiche, Dominação e Acessórios</option>
+            <option value="Afrodisíacos">Afrodisíacos</option>
+            <option value="Massagem">Massagem</option>
+            <option value="Lingeries & Vestuário">Lingeries & Vestuário</option>
         </select>
         <select id="filter-status" class="select-input">
             <option value="ALL">Todos os Status</option>
@@ -336,94 +336,94 @@
         const stockRef = ref(db, 'estoque');
 
         const categoriesList = [
-            "ESTIMULADORES E VIBRADORES",
-            "PRÓTESES E MASTURBADORES",
-            "LUBRIFICANTES NEUTROS",
-            "EXCITANTES MASCULINOS",
-            "EXCITANTE PARA AMBOS",
-            "LINHA ANAL / ANESTÉSICOS",
-            "SEXO ORAL",
-            "FETICHE, DOMINAÇÃO E ACESSÓRIOS",
-            "AFRODISÍACOS",
-            "MASSAGEM",
-            "LANGERIES & VESTUÁRIO"
+            "Estimuladores e Vibradores",
+            "Próteses e Masturbadores",
+            "Lubrificantes Neutros",
+            "Excitantes Masculinos",
+            "Excitante para Ambos",
+            "Linha Anal / Anestésicos",
+            "Sexo Oral",
+            "Fetiche, Dominação e Acessórios",
+            "Afrodisíacos",
+            "Massagem",
+            "Lingeries & Vestuário"
         ];
 
         const defaultInventory = [
-            { id: "PROD-001", name: "Aceita que Dói Menos", category: "LINHA ANAL / ANESTÉSICOS", price: 29.99, qty: 2, variant: "-" },
-            { id: "PROD-002", name: "Algemas Pelúcia", category: "FETICHE, DOMINAÇÃO E ACESSÓRIOS", price: 29.99, qty: 1, variant: "-" },
-            { id: "PROD-003", name: "Algemas Metal", category: "FETICHE, DOMINAÇÃO E ACESSÓRIOS", price: 24.99, qty: 1, variant: "-" },
-            { id: "PROD-004", name: "Anel Peniano", category: "FETICHE, DOMINAÇÃO E ACESSÓRIOS", price: 19.99, qty: 1, variant: "Preto" },
-            { id: "PROD-005", name: "Baralho Erótico", category: "FETICHE, DOMINAÇÃO E ACESSÓRIOS", price: 60.00, qty: 1, variant: "-" },
-            { id: "PROD-006", name: "Blow Girl", category: "SEXO ORAL", price: 68.00, qty: 1, variant: "-" },
-            { id: "PROD-007", name: "Blow Girl Esfoliante", category: "SEXO ORAL", price: 124.80, qty: 1, variant: "-" },
-            { id: "PROD-008", name: "Bolinhas Explosivas", category: "EXCITANTE PARA AMBOS", price: 18.00, qty: 6, variant: "-" },
-            { id: "PROD-009", name: "Calcinha Personalizada Pink", category: "LANGERIES & VESTUÁRIO", price: 45.00, qty: 3, variant: "Pink" },
-            { id: "PROD-010", name: "Calcinha Personalizada Salmão", category: "LANGERIES & VESTUÁRIO", price: 45.00, qty: 3, variant: "Salmão" },
-            { id: "PROD-011", name: "Calcinha Personalizada Branca", category: "LANGERIES & VESTUÁRIO", price: 45.00, qty: 3, variant: "Branca" },
-            { id: "PROD-012", name: "Calcinha Personalizada Vermelha", category: "LANGERIES & VESTUÁRIO", price: 45.00, qty: 1, variant: "Vermelha" },
-            { id: "PROD-013", name: "Calcinha Personalizada Preta", category: "LANGERIES & VESTUÁRIO", price: 45.00, qty: 0, variant: "Preta" },
-            { id: "PROD-014", name: "Capa Peniana", category: "PRÓTESES E MASTURBADORES", price: 35.60, qty: 0, variant: "-" },
-            { id: "PROD-015", name: "Chá de PPK", category: "EXCITANTE PARA AMBOS", price: 39.99, qty: 1, variant: "-" },
-            { id: "PROD-016", name: "Chá de Pika", category: "EXCITANTES MASCULINOS", price: 39.99, qty: 1, variant: "-" },
-            { id: "PROD-017", name: "Cinta Peniana", category: "FETICHE, DOMINAÇÃO E ACESSÓRIOS", price: 48.50, qty: 2, variant: "-" },
-            { id: "PROD-018", name: "Cinta com Algemas", category: "FETICHE, DOMINAÇÃO E ACESSÓRIOS", price: 170.00, qty: 1, variant: "-" },
-            { id: "PROD-019", name: "Clito Gel", category: "EXCITANTE PARA AMBOS", price: 33.00, qty: 0, variant: "-" },
-            { id: "PROD-020", name: "D4 Gel Hot", category: "EXCITANTE PARA AMBOS", price: 42.00, qty: 1, variant: "Hot" },
-            { id: "PROD-021", name: "D4 Gel Neutro", category: "LUBRIFICANTES NEUTROS", price: 42.00, qty: 2, variant: "Neutro" },
-            { id: "PROD-022", name: "D4 Gel Frozen", category: "EXCITANTE PARA AMBOS", price: 42.00, qty: 0, variant: "Frozen" },
-            { id: "PROD-023", name: "Dados Gay", category: "FETICHE, DOMINAÇÃO E ACESSÓRIOS", price: 18.00, qty: 1, variant: "Gay" },
-            { id: "PROD-024", name: "Dados Hetero", category: "FETICHE, DOMINAÇÃO E ACESSÓRIOS", price: 18.00, qty: 1, variant: "Hetero" },
-            { id: "PROD-025", name: "Ducha Higiênica", category: "LINHA ANAL / ANESTÉSICOS", price: 49.99, qty: 1, variant: "-" },
-            { id: "PROD-026", name: "Egg Tradicional", category: "PRÓTESES E MASTURBADORES", price: 29.99, qty: 1, variant: "-" },
-            { id: "PROD-027", name: "Egg Vazado", category: "PRÓTESES E MASTURBADORES", price: 34.99, qty: 1, variant: "-" },
-            { id: "PROD-028", name: "Egg Vagina", category: "PRÓTESES E MASTURBADORES", price: 49.99, qty: 2, variant: "Vagina" },
-            { id: "PROD-029", name: "Egg Ânus", category: "PRÓTESES E MASTURBADORES", price: 49.99, qty: 1, variant: "Ânus" },
-            { id: "PROD-030", name: "Egg Boca", category: "PRÓTESES E MASTURBADORES", price: 49.99, qty: 0, variant: "Boca" },
-            { id: "PROD-031", name: "Faísca na Xavasca", category: "EXCITANTE PARA AMBOS", price: 19.99, qty: 0, variant: "-" },
-            { id: "PROD-032", name: "Garganta Muito + Profunda", category: "SEXO ORAL", price: 38.50, qty: 1, variant: "Chiclete" },
-            { id: "PROD-033", name: "Garganta Profunda Sedenta", category: "SEXO ORAL", price: 23.50, qty: 1, variant: "Kiwi" },
-            { id: "PROD-034", name: "Garganta Profunda Intt", category: "SEXO ORAL", price: 60.00, qty: 0, variant: "-" },
-            { id: "PROD-035", name: "Gel Sugador Unissex Pico Pulse", category: "EXCITANTE PARA AMBOS", price: 175.00, qty: 0, variant: "-" },
-            { id: "PROD-036", name: "Gel Sugador Sugalik", category: "EXCITANTE PARA AMBOS", price: 130.00, qty: 0, variant: "-" },
-            { id: "PROD-037", name: "Goze +", category: "EXCITANTES MASCULINOS", price: 29.99, qty: 2, variant: "-" },
-            { id: "PROD-038", name: "Indolor Gel", category: "LINHA ANAL / ANESTÉSICOS", price: 29.99, qty: 1, variant: "-" },
-            { id: "PROD-039", name: "Kuloko Gel", category: "LINHA ANAL / ANESTÉSICOS", price: 28.50, qty: 2, variant: "-" },
-            { id: "PROD-040", name: "Lacradinha", category: "EXCITANTE PARA AMBOS", price: 29.99, qty: 1, variant: "-" },
-            { id: "PROD-041", name: "Lanterna Erótica", category: "FETICHE, DOMINAÇÃO E ACESSÓRIOS", price: 190.00, qty: 1, variant: "-" },
-            { id: "PROD-042", name: "Lâmina Paper Menta", category: "SEXO ORAL", price: 10.00, qty: 1, variant: "Menta" },
-            { id: "PROD-043", name: "Lâmina Paper Extra Forte", category: "SEXO ORAL", price: 10.00, qty: 1, variant: "Extra Forte" },
-            { id: "PROD-044", name: "Lis In", category: "LINHA ANAL / ANESTÉSICOS", price: 72.00, qty: 3, variant: "-" },
-            { id: "PROD-045", name: "Liquidi Vibrador", category: "EXCITANTE PARA AMBOS", price: 29.99, qty: 1, variant: "Menta" },
-            { id: "PROD-046", name: "Love Lub Neutro", category: "LUBRIFICANTES NEUTROS", price: 35.00, qty: 2, variant: "Neutro" },
-            { id: "PROD-047", name: "Love Lub Ice", category: "LUBRIFICANTES NEUTROS", price: 35.00, qty: 0, variant: "Ice" },
-            { id: "PROD-048", name: "Mama Teta", category: "SEXO ORAL", price: 25.00, qty: 2, variant: "-" },
-            { id: "PROD-049", name: "Melzinho do Amor", category: "AFRODISÍACOS", price: 24.50, qty: 1, variant: "-" },
-            { id: "PROD-050", name: "Pika Turbo", category: "EXCITANTES MASCULINOS", price: 35.00, qty: 2, variant: "-" },
-            { id: "PROD-051", name: "Plug Silicone P", category: "LINHA ANAL / ANESTÉSICOS", price: 45.00, qty: 1, variant: "Vermelho" },
-            { id: "PROD-052", name: "Plug Anal Metal P", category: "LINHA ANAL / ANESTÉSICOS", price: 45.00, qty: 2, variant: "Vermelho" },
-            { id: "PROD-053", name: "Plug Anal Metal M Vermelho", category: "LINHA ANAL / ANESTÉSICOS", price: 52.00, qty: 2, variant: "Vermelho" },
-            { id: "PROD-054", name: "Plug Anal Metal M Pink", category: "LINHA ANAL / ANESTÉSICOS", price: 52.00, qty: 1, variant: "Pink" },
-            { id: "PROD-055", name: "Plug Anal Metal G", category: "LINHA ANAL / ANESTÉSICOS", price: 60.00, qty: 1, variant: "Vermelho" },
-            { id: "PROD-056", name: "Prótese com Ventosa 18x4,5cm", category: "PRÓTESES E MASTURBADORES", price: 140.00, qty: 1, variant: "-" },
-            { id: "PROD-057", name: "Power Shock Gel", category: "EXCITANTE PARA AMBOS", price: 32.00, qty: 2, variant: "-" },
-            { id: "PROD-058", name: "Power Shock Spray", category: "EXCITANTE PARA AMBOS", price: 45.00, qty: 1, variant: "Chiclete" },
-            { id: "PROD-059", name: "Sedenta por Conforto", category: "LINHA ANAL / ANESTÉSICOS", price: 45.50, qty: 1, variant: "-" },
-            { id: "PROD-060", name: "Sedenta Molhada", category: "LUBRIFICANTES NEUTROS", price: 30.00, qty: 1, variant: "-" },
-            { id: "PROD-061", name: "Sedenta Sabores Iogurte Morango", category: "SEXO ORAL", price: 18.00, qty: 1, variant: "Iogurte Morango" },
-            { id: "PROD-062", name: "Sedenta Sabores Gelada", category: "SEXO ORAL", price: 18.00, qty: 1, variant: "Gelada" },
-            { id: "PROD-063", name: "Sete Sensação", category: "LINHA ANAL / ANESTÉSICOS", price: 46.80, qty: 1, variant: "-" },
-            { id: "PROD-064", name: "Tesão de Touro", category: "AFRODISÍACOS", price: 10.00, qty: 5, variant: "-" },
-            { id: "PROD-065", name: "Tesão de Vaca", category: "AFRODISÍACOS", price: 10.00, qty: 3, variant: "-" },
-            { id: "PROD-066", name: "Tesão na Raba", category: "LINHA ANAL / ANESTÉSICOS", price: 29.99, qty: 1, variant: "-" },
-            { id: "PROD-067", name: "Vibrador/Sugador Rosa", category: "ESTIMULADORES E VIBRADORES", price: 220.00, qty: 1, variant: "Rosa" },
-            { id: "PROD-068", name: "Vibrador de Calcinha", category: "ESTIMULADORES E VIBRADORES", price: 150.00, qty: 1, variant: "-" },
-            { id: "PROD-069", name: "Vibrador Golfinho Rosa", category: "ESTIMULADORES E VIBRADORES", price: 40.00, qty: 1, variant: "Rosa" },
-            { id: "PROD-070", name: "Vibrador Golfinho Vinho", category: "ESTIMULADORES E VIBRADORES", price: 40.00, qty: 1, variant: "Vinho" },
-            { id: "PROD-071", name: "Vibrador Ballet", category: "ESTIMULADORES E VIBRADORES", price: 30.00, qty: 1, variant: "Preto" },
-            { id: "PROD-072", name: "Volumão Gel", category: "EXCITANTES MASCULINOS", price: 40.00, qty: 1, variant: "-" },
-            { id: "PROD-073", name: "Xana Loka", category: "EXCITANTE PARA AMBOS", price: 30.00, qty: 2, variant: "-" },
-            { id: "PROD-074", name: "Yummi Bebidas Vodca c/ Melancia", category: "SEXO ORAL", price: 20.00, qty: 1, variant: "Vodca c/ Melancia" }
+            { id: "PROD-001", name: "Aceita que Dói Menos", category: "Linha Anal / Anestésicos", price: 29.99, qty: 2, variant: "-" },
+            { id: "PROD-002", name: "Algemas Pelúcia", category: "Fetiche, Dominação e Acessórios", price: 29.99, qty: 1, variant: "-" },
+            { id: "PROD-003", name: "Algemas Metal", category: "Fetiche, Dominação e Acessórios", price: 24.99, qty: 1, variant: "-" },
+            { id: "PROD-004", name: "Anel Peniano", category: "Fetiche, Dominação e Acessórios", price: 19.99, qty: 1, variant: "Preto" },
+            { id: "PROD-005", name: "Baralho Erótico", category: "Fetiche, Dominação e Acessórios", price: 60.00, qty: 1, variant: "-" },
+            { id: "PROD-006", name: "Blow Girl", category: "Sexo Oral", price: 68.00, qty: 1, variant: "-" },
+            { id: "PROD-007", name: "Blow Girl Esfoliante", category: "Sexo Oral", price: 124.80, qty: 1, variant: "-" },
+            { id: "PROD-008", name: "Bolinhas Explosivas", category: "Excitante para Ambos", price: 18.00, qty: 6, variant: "-" },
+            { id: "PROD-009", name: "Calcinha Personalizada Pink", category: "Lingeries & Vestuário", price: 45.00, qty: 3, variant: "Pink" },
+            { id: "PROD-010", name: "Calcinha Personalizada Salmão", category: "Lingeries & Vestuário", price: 45.00, qty: 3, variant: "Salmão" },
+            { id: "PROD-011", name: "Calcinha Personalizada Branca", category: "Lingeries & Vestuário", price: 45.00, qty: 3, variant: "Branca" },
+            { id: "PROD-012", name: "Calcinha Personalizada Vermelha", category: "Lingeries & Vestuário", price: 45.00, qty: 1, variant: "Vermelha" },
+            { id: "PROD-013", name: "Calcinha Personalizada Preta", category: "Lingeries & Vestuário", price: 45.00, qty: 0, variant: "Preta" },
+            { id: "PROD-014", name: "Capa Peniana", category: "Próteses e Masturbadores", price: 35.60, qty: 0, variant: "-" },
+            { id: "PROD-015", name: "Chá de PPK", category: "Excitante para Ambos", price: 39.99, qty: 1, variant: "-" },
+            { id: "PROD-016", name: "Chá de Pika", category: "Excitantes Masculinos", price: 39.99, qty: 1, variant: "-" },
+            { id: "PROD-017", name: "Cinta Peniana", category: "Fetiche, Dominação e Acessórios", price: 48.50, qty: 2, variant: "-" },
+            { id: "PROD-018", name: "Cinta com Algemas", category: "Fetiche, Dominação e Acessórios", price: 170.00, qty: 1, variant: "-" },
+            { id: "PROD-019", name: "Clito Gel", category: "Excitante para Ambos", price: 33.00, qty: 0, variant: "-" },
+            { id: "PROD-020", name: "D4 Gel Hot", category: "Excitante para Ambos", price: 42.00, qty: 1, variant: "Hot" },
+            { id: "PROD-021", name: "D4 Gel Neutro", category: "Lubrificantes Neutros", price: 42.00, qty: 2, variant: "Neutro" },
+            { id: "PROD-022", name: "D4 Gel Frozen", category: "Excitante para Ambos", price: 42.00, qty: 0, variant: "Frozen" },
+            { id: "PROD-023", name: "Dados Gay", category: "Fetiche, Dominação e Acessórios", price: 18.00, qty: 1, variant: "Gay" },
+            { id: "PROD-024", name: "Dados Hetero", category: "Fetiche, Dominação e Acessórios", price: 18.00, qty: 1, variant: "Hetero" },
+            { id: "PROD-025", name: "Ducha Higiênica", category: "Linha Anal / Anestésicos", price: 49.99, qty: 1, variant: "-" },
+            { id: "PROD-026", name: "Egg Tradicional", category: "Próteses e Masturbadores", price: 29.99, qty: 1, variant: "-" },
+            { id: "PROD-027", name: "Egg Vazado", category: "Próteses e Masturbadores", price: 34.99, qty: 1, variant: "-" },
+            { id: "PROD-028", name: "Egg Vagina", category: "Próteses e Masturbadores", price: 49.99, qty: 2, variant: "Vagina" },
+            { id: "PROD-029", name: "Egg Ânus", category: "Próteses e Masturbadores", price: 49.99, qty: 1, variant: "Ânus" },
+            { id: "PROD-030", name: "Egg Boca", category: "Próteses e Masturbadores", price: 49.99, qty: 0, variant: "Boca" },
+            { id: "PROD-031", name: "Faísca na Xavasca", category: "Excitante para Ambos", price: 19.99, qty: 0, variant: "-" },
+            { id: "PROD-032", name: "Garganta Muito + Profunda", category: "Sexo Oral", price: 38.50, qty: 1, variant: "Chiclete" },
+            { id: "PROD-033", name: "Garganta Profunda Sedenta", category: "Sexo Oral", price: 23.50, qty: 1, variant: "Kiwi" },
+            { id: "PROD-034", name: "Garganta Profunda Intt", category: "Sexo Oral", price: 60.00, qty: 0, variant: "-" },
+            { id: "PROD-035", name: "Gel Sugador Unissex Pico Pulse", category: "Excitante para Ambos", price: 175.00, qty: 0, variant: "-" },
+            { id: "PROD-036", name: "Gel Sugador Sugalik", category: "Excitante para Ambos", price: 130.00, qty: 0, variant: "-" },
+            { id: "PROD-037", name: "Goze +", category: "Excitantes Masculinos", price: 29.99, qty: 2, variant: "-" },
+            { id: "PROD-038", name: "Indolor Gel", category: "Linha Anal / Anestésicos", price: 29.99, qty: 1, variant: "-" },
+            { id: "PROD-039", name: "Kuloko Gel", category: "Linha Anal / Anestésicos", price: 28.50, qty: 2, variant: "-" },
+            { id: "PROD-040", name: "Lacradinha", category: "Excitante para Ambos", price: 29.99, qty: 1, variant: "-" },
+            { id: "PROD-041", name: "Lanterna Erótica", category: "Fetiche, Dominação e Acessórios", price: 190.00, qty: 1, variant: "-" },
+            { id: "PROD-042", name: "Lâmina Paper Menta", category: "Sexo Oral", price: 10.00, qty: 1, variant: "Menta" },
+            { id: "PROD-043", name: "Lâmina Paper Extra Forte", category: "Sexo Oral", price: 10.00, qty: 1, variant: "Extra Forte" },
+            { id: "PROD-044", name: "Lis In", category: "Linha Anal / Anestésicos", price: 72.00, qty: 3, variant: "-" },
+            { id: "PROD-045", name: "Liquidi Vibrador", category: "Excitante para Ambos", price: 29.99, qty: 1, variant: "Menta" },
+            { id: "PROD-046", name: "Love Lub Neutro", category: "Lubrificantes Neutros", price: 35.00, qty: 2, variant: "Neutro" },
+            { id: "PROD-047", name: "Love Lub Ice", category: "Lubrificantes Neutros", price: 35.00, qty: 0, variant: "Ice" },
+            { id: "PROD-048", name: "Mama Teta", category: "Sexo Oral", price: 25.00, qty: 2, variant: "-" },
+            { id: "PROD-049", name: "Melzinho do Amor", category: "Afrodisíacos", price: 24.50, qty: 1, variant: "-" },
+            { id: "PROD-050", name: "Pika Turbo", category: "Excitantes Masculinos", price: 35.00, qty: 2, variant: "-" },
+            { id: "PROD-051", name: "Plug Silicone P", category: "Linha Anal / Anestésicos", price: 45.00, qty: 1, variant: "Vermelho" },
+            { id: "PROD-052", name: "Plug Anal Metal P", category: "Linha Anal / Anestésicos", price: 45.00, qty: 2, variant: "Vermelho" },
+            { id: "PROD-053", name: "Plug Anal Metal M Vermelho", category: "Linha Anal / Anestésicos", price: 52.00, qty: 2, variant: "Vermelho" },
+            { id: "PROD-054", name: "Plug Anal Metal M Pink", category: "Linha Anal / Anestésicos", price: 52.00, qty: 1, variant: "Pink" },
+            { id: "PROD-055", name: "Plug Anal Metal G", category: "Linha Anal / Anestésicos", price: 60.00, qty: 1, variant: "Vermelho" },
+            { id: "PROD-056", name: "Prótese com Ventosa 18x4,5cm", category: "Próteses e Masturbadores", price: 140.00, qty: 1, variant: "-" },
+            { id: "PROD-057", name: "Power Shock Gel", category: "Excitante para Ambos", price: 32.00, qty: 2, variant: "-" },
+            { id: "PROD-058", name: "Power Shock Spray", category: "Excitante para Ambos", price: 45.00, qty: 1, variant: "Chiclete" },
+            { id: "PROD-059", name: "Sedenta por Conforto", category: "Linha Anal / Anestésicos", price: 45.50, qty: 1, variant: "-" },
+            { id: "PROD-060", name: "Sedenta Molhada", category: "Lubrificantes Neutros", price: 30.00, qty: 1, variant: "-" },
+            { id: "PROD-061", name: "Sedenta Sabores Iogurte Morango", category: "Sexo Oral", price: 18.00, qty: 1, variant: "Iogurte Morango" },
+            { id: "PROD-062", name: "Sedenta Sabores Gelada", category: "Sexo Oral", price: 18.00, qty: 1, variant: "Gelada" },
+            { id: "PROD-063", name: "Sete Sensação", category: "Linha Anal / Anestésicos", price: 46.80, qty: 1, variant: "-" },
+            { id: "PROD-064", name: "Tesão de Touro", category: "Afrodisíacos", price: 10.00, qty: 5, variant: "-" },
+            { id: "PROD-065", name: "Tesão de Vaca", category: "Afrodisíacos", price: 10.00, qty: 3, variant: "-" },
+            { id: "PROD-066", name: "Tesão na Raba", category: "Linha Anal / Anestésicos", price: 29.99, qty: 1, variant: "-" },
+            { id: "PROD-067", name: "Vibrador/Sugador Rosa", category: "Estimuladores e Vibradores", price: 220.00, qty: 1, variant: "Rosa" },
+            { id: "PROD-068", name: "Vibrador de Calcinha", category: "Estimuladores e Vibradores", price: 150.00, qty: 1, variant: "-" },
+            { id: "PROD-069", name: "Vibrador Golfinho Rosa", category: "Estimuladores e Vibradores", price: 40.00, qty: 1, variant: "Rosa" },
+            { id: "PROD-070", name: "Vibrador Golfinho Vinho", category: "Estimuladores e Vibradores", price: 40.00, qty: 1, variant: "Vinho" },
+            { id: "PROD-071", name: "Vibrador Ballet", category: "Estimuladores e Vibradores", price: 30.00, qty: 1, variant: "Preto" },
+            { id: "PROD-072", name: "Volumão Gel", category: "Excitantes Masculinos", price: 40.00, qty: 1, variant: "-" },
+            { id: "PROD-073", name: "Xana Loka", category: "Excitante para Ambos", price: 30.00, qty: 2, variant: "-" },
+            { id: "PROD-074", name: "Yummi Bebidas Vodca c/ Melancia", category: "Sexo Oral", price: 20.00, qty: 1, variant: "Vodca c/ Melancia" }
         ];
 
         let inventory = [];
