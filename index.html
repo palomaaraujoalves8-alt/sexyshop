@@ -181,31 +181,33 @@
             font-weight: bold;
         }
 
-        .price-input {
+        .price-input, .variant-input {
             background: transparent;
             border: 1px solid transparent;
             color: var(--primary-gold);
-            width: 80px;
-            padding: 4px;
-            font-weight: bold;
+            padding: 4px 8px;
             font-size: 0.95rem;
+            border-radius: 4px;
+            transition: all 0.2s;
         }
 
-        .price-input:hover, .price-input:focus {
+        .price-input {
+            width: 80px;
+            font-weight: bold;
+        }
+
+        .variant-input {
+            width: 130px;
+            color: var(--text-light);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .price-input:hover, .price-input:focus,
+        .variant-input:hover, .variant-input:focus {
             border-color: var(--primary-gold);
             background-color: var(--bg-dark);
-            border-radius: 4px;
-        }
-
-        .variant-tag {
-            display: inline-block;
-            background: rgba(212, 175, 55, 0.15);
-            border: 1px solid var(--primary-gold);
-            color: var(--primary-gold);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            margin-left: 6px;
+            outline: none;
         }
 
         .sync-status {
@@ -307,7 +309,6 @@
         const db = getDatabase(app);
         const stockRef = ref(db, 'estoque');
 
-        // Dados Iniciais do Estoque
         const defaultInventory = [
             { id: "PROD-001", name: "Aceita que Dói Menos", category: "Cosméticos & Géis", price: 29.99, qty: 2, variant: "-" },
             { id: "PROD-002", name: "Algemas Pelúcia", category: "Acessórios & BDSM", price: 29.99, qty: 1, variant: "-" },
@@ -387,14 +388,12 @@
 
         let inventory = [];
 
-        // Ouve atualizações em tempo real no Firebase
         onValue(stockRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
                 inventory = data;
                 document.getElementById('sync-status').innerText = "✓ Sincronizado com Firebase";
             } else {
-                // Primeira execução: popula o Firebase com a lista inicial
                 set(stockRef, defaultInventory);
                 inventory = defaultInventory;
                 document.getElementById('sync-status').innerText = "✓ Dados Iniciais Cadastrados no Firebase";
@@ -414,6 +413,10 @@
             if (!isNaN(parsed) && parsed >= 0) {
                 update(ref(db, `estoque/${index}`), { price: parsed });
             }
+        };
+
+        window.updateVariant = function(index, value) {
+            update(ref(db, `estoque/${index}`), { variant: value.trim() || "-" });
         };
 
         function updateMetrics() {
@@ -442,7 +445,7 @@
             tbody.innerHTML = '';
 
             inventory.forEach((item, index) => {
-                let matchesSearch = item.name.toLowerCase().includes(search) || item.id.toLowerCase().includes(search);
+                let matchesSearch = item.name.toLowerCase().includes(search) || item.id.toLowerCase().includes(search) || (item.variant && item.variant.toLowerCase().includes(search));
                 let matchesCat = (catFilter === 'ALL' || item.category === catFilter);
                 
                 let itemStatus = item.qty === 0 ? 'OUT' : (item.qty <= 1 ? 'LOW' : 'OK');
@@ -456,7 +459,9 @@
                     row.innerHTML = `
                         <td><strong>${item.id}</strong></td>
                         <td>${item.name}</td>
-                        <td>${item.variant !== '-' ? `<span class="variant-tag">${item.variant}</span>` : '-'}</td>
+                        <td>
+                            <input type="text" class="variant-input" value="${item.variant || '-'}" onchange="window.updateVariant(${index}, this.value)">
+                        </td>
                         <td>${item.category}</td>
                         <td>R$ <input type="number" step="0.01" class="price-input" value="${item.price.toFixed(2)}" onchange="window.updatePrice(${index}, this.value)"></td>
                         <td>
