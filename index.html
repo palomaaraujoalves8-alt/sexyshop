@@ -181,10 +181,10 @@
             font-weight: bold;
         }
 
-        .price-input, .variant-input {
+        .price-input, .variant-input, .name-input, .category-select {
             background: transparent;
             border: 1px solid transparent;
-            color: var(--primary-gold);
+            color: var(--text-light);
             padding: 4px 8px;
             font-size: 0.95rem;
             border-radius: 4px;
@@ -194,17 +194,38 @@
         .price-input {
             width: 80px;
             font-weight: bold;
+            color: var(--primary-gold);
         }
 
-        .variant-input {
-            width: 130px;
-            color: var(--text-light);
+        .name-input {
+            width: 200px;
+            font-weight: 500;
             border: 1px solid rgba(212, 175, 55, 0.2);
             background-color: rgba(0, 0, 0, 0.2);
         }
 
+        .variant-input {
+            width: 130px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .category-select {
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            color: var(--text-light);
+            padding: 4px;
+        }
+
+        .category-select option {
+            background: var(--card-bg);
+            color: var(--text-light);
+        }
+
         .price-input:hover, .price-input:focus,
-        .variant-input:hover, .variant-input:focus {
+        .variant-input:hover, .variant-input:focus,
+        .name-input:hover, .name-input:focus,
+        .category-select:hover, .category-select:focus {
             border-color: var(--primary-gold);
             background-color: var(--bg-dark);
             outline: none;
@@ -308,6 +329,16 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const stockRef = ref(db, 'estoque');
+
+        const categoriesList = [
+            "Cosméticos & Géis",
+            "Acessórios & BDSM",
+            "Vibradores & Sugadores",
+            "Próteses & Plugs",
+            "Lingeries & Vestuário",
+            "Masculino & Masturbadores",
+            "Jogos & Brincadeiras"
+        ];
 
         const defaultInventory = [
             { id: "PROD-001", name: "Aceita que Dói Menos", category: "Cosméticos & Géis", price: 29.99, qty: 2, variant: "-" },
@@ -415,6 +446,16 @@
             }
         };
 
+        window.updateName = function(index, value) {
+            if (value.trim() !== "") {
+                update(ref(db, `estoque/${index}`), { name: value.trim() });
+            }
+        };
+
+        window.updateCategory = function(index, value) {
+            update(ref(db, `estoque/${index}`), { category: value });
+        };
+
         window.updateVariant = function(index, value) {
             update(ref(db, `estoque/${index}`), { variant: value.trim() || "-" });
         };
@@ -455,14 +496,25 @@
                     let statusClass = item.qty === 0 ? 'status-out' : (item.qty <= 1 ? 'status-low' : 'status-ok');
                     let statusText = item.qty === 0 ? 'Esgotado' : (item.qty <= 1 ? 'Estoque Baixo' : 'Em Estoque');
 
+                    // Opções de categorias preenchidas no select
+                    let categoryOptions = categoriesList.map(cat => 
+                        `<option value="${cat}" ${item.category === cat ? 'selected' : ''}>${cat}</option>`
+                    ).join('');
+
                     let row = document.createElement('tr');
                     row.innerHTML = `
                         <td><strong>${item.id}</strong></td>
-                        <td>${item.name}</td>
+                        <td>
+                            <input type="text" class="name-input" value="${item.name}" onchange="window.updateName(${index}, this.value)">
+                        </td>
                         <td>
                             <input type="text" class="variant-input" value="${item.variant || '-'}" onchange="window.updateVariant(${index}, this.value)">
                         </td>
-                        <td>${item.category}</td>
+                        <td>
+                            <select class="category-select" onchange="window.updateCategory(${index}, this.value)">
+                                ${categoryOptions}
+                            </select>
+                        </td>
                         <td>R$ <input type="number" step="0.01" class="price-input" value="${item.price.toFixed(2)}" onchange="window.updatePrice(${index}, this.value)"></td>
                         <td>
                             <button class="btn-qty" onclick="window.updateQuantity(${index}, -1)">-</button>
